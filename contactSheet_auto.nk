@@ -1,0 +1,35 @@
+set cut_paste_input [stack 0]
+version 12.0 v8
+push $cut_paste_input
+ContactSheet {
+width {{((input.width*columns)/rows)*Mult}}
+height {{((input.height*rows)/rows)*Mult}}
+columns 3
+roworder TopBottom
+name ContactSheetPro1
+selected true
+xpos -6640
+ypos 18765
+addUserKnob {20 ResolutionMult}
+addUserKnob {7 Mult l "Multiply Resolution" R 0 4}
+Mult 1
+addUserKnob {26 ""}
+addUserKnob {26 Copyright l "" +STARTLINE T "created by Julian Koerrenz at MPC in March 2019"}
+}
+ContactSheet {
+inputs 0
+width {{"((input.width*columns)/rows)*Mult "}}
+height {{"((input.height*rows)/rows)*Mult /2"}}
+gap 7
+center true
+roworder TopBottom
+name ContactSheetProAnamorphic
+selected true
+xpos -6638
+ypos 18836
+addUserKnob {20 ResolutionMult}
+addUserKnob {7 Mult l "Multiply Resolution" R 0 4}
+Mult 1.4
+addUserKnob {26 ""}
+addUserKnob {26 Copyright l "" +STARTLINE T "created by Julian Koerrenz at MPC in March 2019"}
+}

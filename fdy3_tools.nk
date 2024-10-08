@@ -1,0 +1,174 @@
+set cut_paste_input [stack 0]
+version 12.0 v8
+push $cut_paste_input
+smoothStretch_b01 {
+ name smoothStretch_b01_1
+ note_font "Bitstream Vera Sans"
+ selected true
+ xpos -13137
+ ypos -8852
+ PositionStartGrad {2120 216}
+ PositionEndGrad {2120 -114}
+}
+Group {
+ inputs 0
+ name HSV_mix11
+ help "Converts colorspace of inputs and transfers hue and saturation from A to B while ignoring luminance.\n\nUseful for mixing plate color into smoke or dust without altering brightness of element.\n"
+ tile_color 0x7aa9ff00
+ note_font "Bitstream Vera Sans"
+ selected true
+ xpos -13316
+ ypos -8845
+ addUserKnob {20 userTab l User}
+ addUserKnob {41 size l "Blur Source" t "Blurs A input prior to transferring hue and saturation" T Blur_BG.size}
+ addUserKnob {26 ""}
+ addUserKnob {7 hueIn l "Hue Shift" t "0 is hue of input, moving towards 1 cycles through colorwheel"}
+ hueIn 1
+ addUserKnob {41 value l Saturation t "1 is 100% saturation" T Mult_Sat.value}
+ addUserKnob {26 ""}
+ addUserKnob {41 alpha l Mask t "Multiplies output by chosen channel" T Premult1.alpha}
+ addUserKnob {41 invert -STARTLINE T Premult1.invert}
+ addUserKnob {7 masterMix l Mix}
+ masterMix 1
+ addUserKnob {26 ""}
+}
+ Input {
+  inputs 0
+  name B
+  xpos -500
+  ypos 1
+ }
+ Dot {
+  name Dot2
+  xpos -466
+  ypos 136
+ }
+set N3e871760 [stack 0]
+ Dot {
+  name Dot1
+  xpos -466
+  ypos 485
+ }
+set N3e824010 [stack 0]
+ Dot {
+  name Dot4
+  xpos -466
+  ypos 594
+ }
+ Input {
+  inputs 0
+  name A
+  xpos -658
+  number 1
+ }
+ AddChannels {
+  channels rgba
+  name AddChannels1
+  xpos -658
+  ypos 26
+ }
+ Blur {
+  size 20
+  name Blur_BG
+  xpos -658
+  ypos 65
+ }
+ Crop {
+  box {{curve i} {curve i} {width i} {height i}}
+  crop false
+  name Crop1
+  xpos -658
+  ypos 134
+ }
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace1
+  xpos -658
+  ypos 191
+ }
+set N3bdf9770 [stack 0]
+ Dot {
+  name Dot3
+  xpos -624
+  ypos 272
+ }
+push $N3bdf9770
+push $N3e871760
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace3
+  xpos -395
+  ypos 131
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  name Hue
+  xpos -395
+  ypos 185
+ }
+ Copy {
+  inputs 2
+  from0 rgba.green
+  to0 rgba.green
+  name Saturation
+  xpos -395
+  ypos 260
+ }
+ Add {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  value {{parent.hueIn}}
+  name Add_Hue
+  xpos -402
+  ypos 318
+ }
+ Multiply {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  name Mult_Sat
+  xpos -395
+  ypos 359
+ }
+ Colorspace {
+  colorspace_in HSV
+  name Colorspace2
+  xpos -395
+  ypos 415
+ }
+push $N3e824010
+ Dissolve {
+  inputs 2
+  which {{parent.masterMix}}
+  name Mix
+  xpos -395
+  ypos 475
+ }
+ Premult {
+  channels rgba
+  alpha none
+  name Premult1
+  xpos -395
+  ypos 542
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos -395
+  ypos 590
+ }
+set Nfdd3cc80 [stack 0]
+ Output {
+  name Output1
+  xpos -395
+  ypos 669
+ }
+push $Nfdd3cc80
+push $Nfdd3cc80
+ Viewer {
+  inputs 2
+  input_number 1
+  name Viewer1
+  xpos -670
+  ypos 542
+ }
+end_group

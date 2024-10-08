@@ -1,0 +1,121 @@
+set cut_paste_input [stack 0]
+version 12.0 v8
+push $cut_paste_input
+Group {
+name SoftclipCustom1
+help "This node will clamp to max value with a rolloff starting at max value minus smoothness"
+label "\n"
+selected true
+xpos -6783
+ypos 20275
+addUserKnob {20 SoftclipCustom}
+addUserKnob {18 rolloffstart l "roll off start" R 0 100}
+rolloffstart 200
+addUserKnob {6 rolloffstart_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 smoothness_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {18 maxvalue l "max value" R 0 100}
+maxvalue 221
+addUserKnob {6 maxvalue_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 tint_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {20 info t "About:\n\t\nThis node is applying a sofclip"}
+addUserKnob {26 About l About: T "This node applies a softclip \nwith custom max value. \n\nYou can adjust max values  \nand roll of start for each \nchannel separately.\n\n"}
+addUserKnob {26 ""}
+addUserKnob {26 Author l Author: T "Daniel Norlund (dnorlund)"}
+}
+Input {
+inputs 0
+name Input1
+xpos 579
+ypos 262
+}
+set N606632e0 [stack 0]
+Grade {
+add {{-parent.maxvalue.2+1}}
+black_clamp false
+name Grade3
+xpos 807
+ypos 347
+}
+SoftClip {
+conversion "logarithmic compress"
+softclip_min {{clamp(1+parent.rolloffstart.2-parent.maxvalue.2,(-(parent.maxvalue.2-1)),1)}}
+name SoftClip3
+xpos 807
+ypos 382
+}
+Grade {
+add {{parent.Grade3.add}}
+reverse true
+black_clamp false
+name Grade4
+xpos 807
+ypos 424
+}
+push $N606632e0
+Grade {
+add {{-parent.maxvalue.1+1}}
+black_clamp false
+name Grade1
+xpos 692
+ypos 347
+}
+SoftClip {
+conversion "logarithmic compress"
+softclip_min {{clamp(1+parent.rolloffstart.1-parent.maxvalue.1,(-(parent.maxvalue.1-1)),1)}}
+name SoftClip2
+xpos 692
+ypos 381
+}
+Grade {
+add {{parent.Grade1.add}}
+reverse true
+black_clamp false
+name Grade2
+xpos 692
+ypos 423
+}
+push $N606632e0
+Grade {
+add {{-parent.maxvalue.0+1}}
+black_clamp false
+name Grade66
+xpos 579
+ypos 348
+}
+SoftClip {
+conversion "logarithmic compress"
+softclip_min {{clamp(1+parent.rolloffstart.0-parent.maxvalue.0,(-(parent.maxvalue.0-1)),1)}}
+name SoftClip1
+xpos 579
+ypos 381
+}
+Grade {
+add {{parent.Grade66.add}}
+reverse true
+black_clamp false
+name Grade133
+xpos 579
+ypos 423
+}
+Copy {
+inputs 2
+from0 rgba.green
+to0 rgba.green
+name Copy1
+xpos 579
+ypos 475
+}
+Copy {
+inputs 2
+from0 rgba.blue
+to0 rgba.blue
+name Copy2
+xpos 579
+ypos 513
+}
+Output {
+name Output1
+xpos 579
+ypos 557
+}
+end_group

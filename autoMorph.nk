@@ -1,0 +1,103 @@
+set cut_paste_input [stack 0]
+version 12.0 v8
+push 0
+push $cut_paste_input
+Group {
+inputs 2
+name AutoMorph_v2
+note_font "Bitstream Vera Sans"
+selected true
+xpos -5261
+ypos 3748
+addUserKnob {20 User l AutoMorph}
+addUserKnob {26 ""}
+addUserKnob {41 morpha l "Frame A" T NoOp.morpha}
+addUserKnob {41 morphb l "Frame B" T NoOp.morphb}
+addUserKnob {22 CreateMorph l "Create Morph" T "a = nuke.toNode(\"NoOp\")\[\"morpha\"].value()\nb = nuke.toNode(\"NoOp\")\[\"morphb\"].value()\n\nnuke.thisNode()\[\"MorphCurve\"].clearAnimated()\nnuke.thisNode()\[\"MorphCurve\"].setAnimated()\nnuke.thisNode()\[\"MorphCurve\"].setValueAt(a,a)\nnuke.thisNode()\[\"MorphCurve\"].setValueAt(a+1,b)\n\nmyGroup = nuke.thisGroup()\nmyGroup.begin()\n\nnuke.toNode(\"SwitchAB\")\[\"which\"].clearAnimated()\nnuke.toNode(\"SwitchAB\")\[\"which\"].setAnimated()\nnuke.toNode(\"SwitchAB\")\[\"which\"].setValueAt(0,a)\nnuke.toNode(\"SwitchAB\")\[\"which\"].setValueAt(1,a+1)\n\nnuke.toNode(\"TimeWarpMorph\")\[\"lookup\"].clearAnimated()\nnuke.toNode(\"TimeWarpMorph\")\[\"lookup\"].setAnimated()\nnuke.toNode(\"TimeWarpMorph\")\[\"lookup\"].setValueAt(a,a)\nnuke.toNode(\"TimeWarpMorph\")\[\"lookup\"].setValueAt(b,a+1)\n\nnuke.toNode(\"Activate\")\[\"which\"].clearAnimated()\nnuke.toNode(\"Activate\")\[\"which\"].setAnimated()\nnuke.toNode(\"Activate\")\[\"which\"].setValueAt(0,a)\nnuke.toNode(\"Activate\")\[\"which\"].setValueAt(1,a+1)\nnuke.toNode(\"Activate\")\[\"which\"].setValueAt(1,b-1)\nnuke.toNode(\"Activate\")\[\"which\"].setValueAt(0,b)\n\nmyGroup.end()" +STARTLINE}
+addUserKnob {26 ""}
+addUserKnob {26 ""}
+addUserKnob {7 MorphCurve R 1000 2000}
+MorphCurve {{curve x1087 1087 x1092 1088}}
+addUserKnob {26 Curve l "" +STARTLINE T "Default curve is Linear, can be changed to\nSmooth for an easy-in and out Morph"}
+addUserKnob {26 ""}
+addUserKnob {26 kronos l "" +STARTLINE T "Kronos Settings"}
+addUserKnob {41 retimedChannels l Channels T KronosFix.retimedChannels}
+addUserKnob {41 vectorDetailReg l "Vector Detail" T KronosFix.vectorDetailReg}
+addUserKnob {41 strengthReg l Strength T KronosFix.strengthReg}
+addUserKnob {41 resampleType l Resampling T KronosFix.resampleType}
+addUserKnob {26 Shutter}
+addUserKnob {41 shutterSamples l "Shutter Samples" T KronosFix.shutterSamples}
+addUserKnob {41 shutterTime l "Shutter Time" T KronosFix.shutterTime}
+addUserKnob {41 autoShutterTime l "Automatic Shutter Time" T KronosFix.autoShutterTime}
+addUserKnob {20 Version}
+addUserKnob {32 confluence T "start https://confluence.lucasfilm.com/display/COMP/AutoMorph" +STARTLINE}
+addUserKnob {26 text l "" +STARTLINE T "Help :\nWill Morph Frame A to Frame B between the frame range provided\n\n\nVersion Release alpha\nAuthor : Vincent Papaix (vpapaix)\nRelease Date :"}
+}
+Input {
+inputs 0
+name B
+xpos -318
+ypos 394
+number 1
+}
+Input {
+inputs 0
+name A
+xpos -505
+ypos 394
+}
+Switch {
+inputs 2
+which {{curve x1087 0 1}}
+name SwitchAB
+xpos -505
+ypos 528
+}
+NoOp {
+name NoOp
+xpos -505
+ypos 592
+addUserKnob {20 User}
+addUserKnob {3 morpha}
+morpha 1087
+addUserKnob {3 morphb}
+morphb 1092
+addUserKnob {22 ProcessFrame l "Create Morph" T "a = nuke.toNode(\"NoOp\")\[\"morpha\"].value()\nb = nuke.toNode(\"NoOp\")\[\"morphb\"].value()\n\n\nnuke.toNode(\"SwitchAB\")\[\"which\"].clearAnimated()\nnuke.toNode(\"SwitchAB\")\[\"which\"].setAnimated()\nnuke.toNode(\"SwitchAB\")\[\"which\"].setValueAt(0,a)\nnuke.toNode(\"SwitchAB\")\[\"which\"].setValueAt(1,a+1)\n\n\nnuke.toNode(\"TimeWarpMorph\")\[\"lookup\"].clearAnimated()\nnuke.toNode(\"TimeWarpMorph\")\[\"lookup\"].setAnimated()\nnuke.toNode(\"TimeWarpMorph\")\[\"lookup\"].setValueAt(a,a)\nnuke.toNode(\"TimeWarpMorph\")\[\"lookup\"].setValueAt(b,a+1)\n\nnuke.toNode(\"KronosFix\")\[\"timingFrame2\"].clearAnimated()\nnuke.toNode(\"KronosFix\")\[\"timingFrame2\"].setAnimated()\nnuke.toNode(\"KronosFix\")\[\"timingFrame2\"].setValueAt(a,a)\nnuke.toNode(\"KronosFix\")\[\"timingFrame2\"].setValueAt(a+1,b)\n\nnuke.toNode(\"Activate\")\[\"which\"].clearAnimated()\nnuke.toNode(\"Activate\")\[\"which\"].setAnimated()\nnuke.toNode(\"Activate\")\[\"which\"].setValueAt(0,a)\nnuke.toNode(\"Activate\")\[\"which\"].setValueAt(1,a+1)\nnuke.toNode(\"Activate\")\[\"which\"].setValueAt(1,b-1)\nnuke.toNode(\"Activate\")\[\"which\"].setValueAt(0,b)" +STARTLINE}
+}
+set N3c141270 [stack 0]
+TimeWarp {
+lookup {{curve x1087 1087 1092}}
+time ""
+filter nearest
+name TimeWarpMorph
+xpos -410
+ypos 683
+}
+Kronos {
+input.first 1036
+input.last 1065
+timing2 Frame
+timingFrame2 {{parent.MorphCurve}}
+showLegacyMode false
+motionEstimation Regularized
+vectorDetailReg 1
+Shutter 1
+legacyModeNuke9 false
+name KronosFix
+xpos -410
+ypos 798
+}
+push $N3c141270
+Switch {
+inputs 2
+which {{curve x1087 0 1 x1091 1 x1092 0}}
+name Activate
+xpos -505
+ypos 900
+}
+Output {
+name Output1
+xpos -505
+ypos 1000
+}
+end_group
